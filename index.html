@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de Placas de Trânsito</title>
+    <style>
+        .question-container {
+            display: none;
+        }
+        .question-container.active {
+            display: block;
+        }
+        .feedback {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+        }
+        .correct {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .incorrect {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <div id="question1" class="question-container active">
+            <h2>Questão 1</h2>
+            <p>A placa (A-12) significa:</p>
+            <img src="https://clubedetran.com.br/wp-content/uploads/2015/04/A-12.png" alt="Placa A-12">
+            <form id="form1">
+                <input type="radio" name="q1" value="incorrect1"> Proibido Interseção em círculo<br>
+                <input type="radio" name="q1" value="incorrect2"> Permitido trânsito em círculo<br>
+                <input type="radio" name="q1" value="correct"> Interseção em círculo<br>
+                <button type="button" onclick="checkAnswer(1)">Responder</button>
+            </form>
+            <div id="feedback1" class="feedback"></div>
+            <button onclick="nextQuestion(1)" style="display:none" id="next1">Próxima Questão</button>
+        </div>
+
+        <div id="question2" class="question-container">
+            <h2>Questão 2</h2>
+            <p>A placa (A-21A) significa:</p>
+            <img src="https://clubedetran.com.br/wp-content/uploads/2015/04/A-21A.png" alt="Placa A-21A">
+            <form id="form2">
+                <input type="radio" name="q2" value="correct"> Estreitamento de pista ao centro<br>
+                <input type="radio" name="q2" value="incorrect1"> Passagem obrigatória no túnel<br>
+                <input type="radio" name="q2" value="incorrect2"> Pista única ao centro<br>
+                <button type="button" onclick="checkAnswer(2)">Responder</button>
+            </form>
+            <div id="feedback2" class="feedback"></div>
+            <button onclick="nextQuestion(2)" style="display:none" id="next2">Próxima Questão</button>
+        </div>
+
+        <div id="question3" class="question-container">
+            <h2>Questão 3</h2>
+            <p>A placa (R-23) significa:</p>
+            <img src="https://clubedetran.com.br/wp-content/uploads/2013/12/R-23-Conserve-se-%C3%A0-direita.png" alt="Placa R-23">
+            <form id="form3">
+                <input type="radio" name="q3" value="incorrect1"> Estacione à direita<br>
+                <input type="radio" name="q3" value="correct"> Conserve-se à direita<br>
+                <input type="radio" name="q3" value="incorrect2"> Ultrapasse pela direita<br>
+                <button type="button" onclick="checkAnswer(3)">Responder</button>
+            </form>
+            <div id="feedback3" class="feedback"></div>
+            <button onclick="nextQuestion(3)" style="display:none" id="next3">Próxima Questão</button>
+        </div>
+
+        <div id="question4" class="question-container">
+            <h2>Questão 4</h2>
+            <p>A placa (A-17) significa:</p>
+            <img src="https://clubedetran.com.br/wp-content/uploads/2015/04/A-17.png" alt="Placa A-17">
+            <form id="form4">
+                <input type="radio" name="q4" value="incorrect1"> Pista com lombadas<br>
+                <input type="radio" name="q4" value="incorrect2"> Pista com quebra-molas<br>
+                <input type="radio" name="q4" value="correct"> Pista irregular<br>
+                <button type="button" onclick="checkAnswer(4)">Responder</button>
+            </form>
+            <div id="feedback4" class="feedback"></div>
+            <button onclick="nextQuestion(4)" style="display:none" id="next4">Próxima Questão</button>
+        </div>
+
+        <div id="question5" class="question-container">
+            <h2>Questão 5</h2>
+            <p>A placa (A-28) significa:</p>
+            <img src="https://clubedetran.com.br/wp-content/uploads/2015/04/A-28.png" alt="Placa A-28">
+            <form id="form5">
+                <input type="radio" name="q5" value="incorrect1"> Pista alagada<br>
+                <input type="radio" name="q5" value="incorrect2"> Pista com aquaplanagem<br>
+                <input type="radio" name="q5" value="correct"> Pista escorregadia<br>
+                <button type="button" onclick="checkAnswer(5)">Responder</button>
+            </form>
+            <div id="feedback5" class="feedback"></div>
+            <button onclick="showResults()" style="display:none" id="next5">Ver Resultados</button>
+        </div>
+
+        <div id="results" class="question-container">
+            <h2>Resultados</h2>
+            <p>Você completou o quiz!</p>
+            <p>Pontuação: <span id="score">0</span>/5</p>
+            <button onclick="restartQuiz()">Recomeçar</button>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+
+        function checkAnswer(questionNum) {
+            const form = document.getElementById('form' + questionNum);
+            const selected = form.querySelector('input[name="q' + questionNum + '"]:checked');
+            const feedback = document.getElementById('feedback' + questionNum);
+            const nextButton = document.getElementById('next' + questionNum);
+            
+            if (!selected) {
+                alert('Por favor, selecione uma resposta!');
+                return;
+            }
+
+            if (selected.value === 'correct') {
+                feedback.innerHTML = 'Correto!';
+                feedback.className = 'feedback correct';
+                score++;
+            } else {
+                feedback.innerHTML = 'Incorreto. A resposta correta era: ' + 
+                    form.querySelector('input[value="correct"]').nextSibling.textContent;
+                feedback.className = 'feedback incorrect';
+            }
+
+            feedback.style.display = 'block';
+            nextButton.style.display = 'block';
+            form.querySelector('button').disabled = true;
+            form.querySelectorAll('input').forEach(input => input.disabled = true);
+        }
+
+        function nextQuestion(currentNum) {
+            document.getElementById('question' + currentNum).classList.remove('active');
+            document.getElementById('question' + (currentNum + 1)).classList.add('active');
+        }
+
+        function showResults() {
+            document.getElementById('question5').classList.remove('active');
+            document.getElementById('results').classList.add('active');
+            document.getElementById('score').textContent = score;
+        }
+
+        function restartQuiz() {
+            score = 0;
+            document.querySelectorAll('.question-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.getElementById('question1').classList.add('active');
+            
+            document.querySelectorAll('form').forEach(form => {
+                form.reset();
+                form.querySelector('button').disabled = false;
+                form.querySelectorAll('input').forEach(input => input.disabled = false);
+            });
+            
+            document.querySelectorAll('.feedback').forEach(feedback => {
+                feedback.style.display = 'none';
+            });
+            
+            document.querySelectorAll('[id^="next"]').forEach(button => {
+                button.style.display = 'none';
+            });
+        }
+    </script>
+</body>
+</html>
